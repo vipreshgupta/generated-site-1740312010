@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Event Management Platform">
+    <meta name="keywords" content="event, management, tickets, booking, organizer">
+    <title>Event Organizer Platform</title>
+    <style>
+        /* General Styles */
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #ff9800;
+            --dark-bg: #333;
+            --dark-text: #fff;
+            --light-bg: #fff;
+            --light-text: #333;
+            --accent-color: #f44336;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.dark-theme {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 {
+            color: var(--primary-color);
+        }
+        .dark-theme h1, .dark-theme h2, .dark-theme h3 {
+            color: #9fa8da;
+        }
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #e68a00;
+        }
+        .dark-theme button {
+            background-color: #ffb74d;
+        }
+        .dark-theme button:hover {
+            background-color: #ffa726;
+        }
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .dark-theme header {
+            background-color: #2c3e50;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+        .dark-theme nav a:hover {
+            color: #ffb74d;
+        }
+        #theme-toggle {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+        .dark-theme #theme-toggle {
+            color: var(--dark-text);
+            border-color: var(--dark-text);
+        }
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #f0f2f5;
+        }
+        .dark-theme .hero {
+            background-color: #424242;
+        }
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .feature {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .dark-theme .feature {
+            border-color: #666;
+            background-color: #555;
+        }
+        .feature i {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        .dark-theme .feature i {
+            color: #9fa8da;
+        }
+        /* Dashboard */
+        .dashboard {
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .dark-theme .sidebar {
+            background-color: #444;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            color: var(--light-text);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+        .dark-theme .sidebar a {
+            color: var(--dark-text);
+        }
+        .dark-theme .sidebar a:hover {
+            background-color: #666;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        /* Event Form */
+        .event-form fieldset {
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .dark-theme .event-form fieldset {
+            border-color: #666;
+            background-color: #555;
+        }
+        .event-form legend {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .dark-theme .event-form legend {
+            color: #9fa8da;
+        }
+        .event-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .event-form input[type="text"],
+        .event-form input[type="date"],
+        .event-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .dark-theme .event-form input[type="text"],
+        .dark-theme .event-form input[type="date"],
+        .dark-theme .event-form textarea {
+            border-color: #666;
+            background-color: #777;
+            color: var(--dark-text);
+        }
+        /* Ticket Cart */
+        .ticket-cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+        .dark-theme .ticket-cart {
+            background-color: #555;
+            border-color: #666;
+        }
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+        .cart-items li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .dark-theme .cart-items li {
+            border-bottom-color: #666;
+        }
+        .cart-total {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+        }
+        .dark-theme footer {
+            background-color: #444;
+            border-top-color: #666;
+        }
+        footer ul {
+            list-style: none;
+            padding: 0;
+            display: inline-block;
+        }
+        footer ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+        footer a {
+            color: var(--light-text);
+            text-decoration: none;
+        }
+        .dark-theme footer a {
+            color: var(--dark-text);
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        /* Accessibility */
+        [tabindex]:focus {
+            outline: 2px solid var(--primary-color);
+        }
+        .dark-theme [tabindex]:focus {
+            outline-color: #9fa8da;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            nav ul {
+                margin-top: 10px;
+            }
+            nav ul li {
+                margin: 5px 10px;
+            }
+            .dashboard {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Event Organizer</h1>
+        <nav>
+            <ul>
+                <li><a href="#home" tabindex="1">Home</a></li>
+                <li><a href="#create-event" tabindex="2">Create Event</a></li>
+                <li><a href="#manage-events" tabindex="3">Manage Events</a></li>
+                <li><a href="#dashboard" tabindex="4">Dashboard</a></li>
+                <li><a href="#support" tabindex="5">Support</a></li>
+            </ul>
+        </nav>
+        <button id="theme-toggle" aria-label="Toggle Dark Theme" tabindex="6">🌙</button>
+    </header>
+
+    <section id="home" class="container hero">
+        <h1>Welcome to the Event Organizer Platform</h1>
+        <p>Create, manage, and promote your events seamlessly.</p>
+        <button tabindex="7">Get Started</button>
+    </section>
+
+    <section class="container features">
+        <div class="feature">
+            <i class="fas fa-calendar-plus"></i>
+            <h3>Create Events</h3>
+            <p>Easily create and customize your events.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-tasks"></i>
+            <h3>Manage Events</h3>
+            <p>Manage all aspects of your events in one place.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-ticket-alt"></i>
+            <h3>Ticket Booking</h3>
+            <p>Integrated ticket booking system for attendees.</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-chart-line"></i>
+            <h3>Analytics</h3>
+            <p>Track event performance with detailed analytics.</p>
+        </div>
+    </section>
+
+    <section id="dashboard" class="container dashboard">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="#event-listings" tabindex="8">Event Listings</a></li>
+                <li><a href="#ticket-sales" tabindex="9">Ticket Sales</a></li>
+                <li><a href="#analytics" tabindex="10">Analytics</a></li>
+                <li><a href="#settings" tabindex="11">Settings</a></li>
+            </ul>
+        </aside>
+        <main class="main-content">
+            <h2>Upcoming Events</h2>
+            <div id="event-listings">
+                
+            </div>
+        </main>
+    </section>
+
+    <section id="create-event" class="container">
+        <h2>Create Event</h2>
+        <form class="event-form" id="eventForm">
+            <fieldset>
+                <legend>Event Details</legend>
+                <label for="eventName">Event Name:</label>
+                <input type="text" id="eventName" name="eventName" required tabindex="12">
+                <label for="eventDate">Event Date:</label>
+                <input type="date" id="eventDate" name="eventDate" required tabindex="13">
+                <label for="eventLocation">Event Location:</label>
+                <input type="text" id="eventLocation" name="eventLocation" required tabindex="14">
+                <label for="eventDescription">Event Description:</label>
+                <textarea id="eventDescription" name="eventDescription" rows="4" tabindex="15"></textarea>
+            </fieldset>
+            <button type="submit" tabindex="16">Create Event</button>
+        </form>
+    </section>
+
+     <section id="manage-events" class="container">
+        <h2>Manage Events</h2>
+        <div id="manage-event-listings">
+        </div>
+    </section>
+
+    <div class="ticket-cart" id="ticketCart">
+        <h3>Ticket Cart</h3>
+        <ul class="cart-items" id="cartItems">
+        </ul>
+        <div class="cart-total">Total: $<span id="cartTotal">0.00</span></div>
+        <button id="checkoutBtn" tabindex="17">Checkout</button>
+    </div>
+
+    <footer id="support">
+        <div class="container">
+            <p>&copy; 2024 Event Organizer. All rights reserved.</p>
+            <ul>
+                <li><a href="#about" tabindex="18">About Us</a></li>
+                <li><a href="#contact" tabindex="19">Contact</a></li>
+                <li><a href="#terms" tabindex="20">Terms of Service</a></li>
+                <li><a href="#privacy" tabindex="21">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check for saved theme preference
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            body.classList.add(currentTheme);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (body.classList.contains('dark-theme')) {
+                body.classList.remove('dark-theme');
+                localStorage.setItem('theme', '');
+            } else {
+                body.classList.add('dark-theme');
+                localStorage.setItem('theme', 'dark-theme');
+            }
+        });
+
+        // Event Form Submission
+        const eventForm = document.getElementById('eventForm');
+        eventForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const eventName = document.getElementById('eventName').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const eventLocation = document.getElementById('eventLocation').value;
+            const eventDescription = document.getElementById('eventDescription').value;
+
+            alert(`Event Created!\nName: ${eventName}\nDate: ${eventDate}\nLocation: ${eventLocation}\nDescription: ${eventDescription}`);
+        });
+
+        // Ticket Cart
+        let cart = [];
+        const cartItemsList = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        function updateCartDisplay() {
+            cartItemsList.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                cartItemsList.appendChild(listItem);
+                total += item.price;
+            });
+            cartTotal.textContent = total.toFixed(2);
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartDisplay();
+        }
+
+        checkoutBtn.addEventListener('click', () => {
+            alert(`Checkout Total: $${cartTotal.textContent}`);
+            cart = [];
+            updateCartDisplay();
+        });
+
+        // Example: Add to cart button (This would be dynamically added with event listings)
+        function createAddToCartButton(eventName, eventPrice) {
+            const button = document.createElement('button');
+            button.textContent = 'Add to Cart';
+            button.addEventListener('click', () => {
+                addToCart(eventName, eventPrice);
+            });
+            return button;
+        }
+
+        // Example: Populate Manage Events Section
+        const manageEventListings = document.getElementById('manage-event-listings');
+        function addEventToManageSection(name, date, location) {
+            const eventDiv = document.createElement('div');
+            eventDiv.innerHTML = `<h3>${name}</h3><p>Date: ${date}</p><p>Location: ${location}</p>`;
+            const addToCartButton = createAddToCartButton(name, 25.00); // Example price
+            eventDiv.appendChild(addToCartButton);
+            manageEventListings.appendChild(eventDiv);
+        }
+
+        // Call this function with your event data
+        addEventToManageSection('Tech Conference 2024', '2024-11-15', 'San Francisco');
+        addEventToManageSection('Music Festival', '2024-12-01', 'Los Angeles');
+
+         // Example: Populate Event Listings in Dashboard
+        const eventListings = document.getElementById('event-listings');
+        function addEventToDashboard(name, date, location) {
+            const eventDiv = document.createElement('div');
+            eventDiv.innerHTML = `<h3>${name}</h3><p>Date: ${date}</p><p>Location: ${location}</p>`;
+            eventListings.appendChild(eventDiv);
+        }
+
+        // Call this function with your event data
+        addEventToDashboard('Tech Conference 2024', '2024-11-15', 'San Francisco');
+        addEventToDashboard('Music Festival', '2024-12-01', 'Los Angeles');
+
+    </script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script>
+</body>
+</html>
